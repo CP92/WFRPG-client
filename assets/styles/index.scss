@@ -1,1 +1,103 @@
 @import '~bootstrap/scss/bootstrap';
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+
+.hidden {
+  display: none;
+}
+
+h2 {
+  padding-top: 20px;
+  font-family: 'Palatino';
+}
+
+// Sign-In, Sign-Up & Change Password Password CSS
+.sign-in-form {
+  margin-left: 16%;
+  margin-top: 10px;
+  // border: 1px solid #28a745;
+  // border-radius: 20px;
+}
+
+.delete-save-drop-button {
+  margin-left: 24%;
+  margin-top: 10px;
+}
+
+.sign-up-form {
+  margin-left: 24%;
+  margin-top: 10px;
+  // border: 1px solid #ffc107;
+  // border-radius: 20px;
+}
+
+.change-password-form {
+  margin-left: 22%;
+  margin-top: 10px;
+  // border: 1px solid #ffc107;
+  // border-radius: 20px;
+}
+
+.tensection {
+    width:60%;
+    border-radius:5px;
+    height:80px;
+    margin:30px 20%;
+    position: flex;
+    border:1px solid #eee;
+    font: 20px 'Helvetica';
+    color:#ddd;
+    padding: 10px 0 20px 20px;
+    line-height:40px;
+    // text-align:center;
+    background:white;
+    // z-index:1;
+}
+
+
+li {
+  margin: 0 10px;
+}
+
+.content {
+  margin-top: 35px;
+}
+
+// dashboard css
+.widget-content {
+  margin-top: 35px;
+}
+.widget-box {
+  background: #fff;
+  // border: 1px solid #28a745;
+  float: left;
+  width: auto;
+  margin: 5px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+// .widget-header {
+//   background: #17a2b8;
+// }
+// .widget-header h2 {
+//   font-size: 15px;
+//   font-weight: normal;
+//   margin: 0;
+//   padding: 11px 15px;
+//   color: #F9F9F9;
+//   display: inline-block;
+// }
+// .sample-widget {max-width: 47%;}
+// .widget-box .fa-cog {
+//   float: right;
+//   color: #fff;
+//   margin: 11px 11px 0 0;
+//   font-size: 20px;
+// }

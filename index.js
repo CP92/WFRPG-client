@@ -7,7 +7,7 @@ import 'bootstrap'
 
 // allows usage of new JS features
 require('babel-polyfill')
-
+require('phaser')
 // load manifests
 // scripts
 require('./assets/scripts/app.js')
