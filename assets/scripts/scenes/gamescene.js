@@ -322,46 +322,46 @@ export default class GameScene extends phaser.Scene {
         player.data.inventory.pickaxe = true;
       }
       // Check for rock 1
-      if ((Math.abs(player.body.x - goldRock1.body.x) < 40) && (Math.abs(player.body.y - goldRock1.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock1 = this.physics.add.sprite(this.goldRock1Object.x, this.goldRock1Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock1Object.data.destroyed) && (Math.abs(player.body.x - goldRock1.body.x) < 40) && (Math.abs(player.body.y - goldRock1.body.y) < 50)) {
+        goldRock1.destroy()
         this.goldRock1Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
       // Check for rock 2
-      if ((Math.abs(player.body.x - goldRock2.body.x) < 40) && (Math.abs(player.body.y - goldRock2.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock2 = this.physics.add.sprite(this.goldRock2Object.x, this.goldRock2Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock2Object.data.destroyed) && (Math.abs(player.body.x - goldRock2.body.x) < 40) && (Math.abs(player.body.y - goldRock2.body.y) < 50) ) {
+        goldRock2.destroy()
         this.goldRock2Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
       // check for rock 3
-      if ((Math.abs(player.body.x - goldRock3.body.x) < 40) && (Math.abs(player.body.y - goldRock3.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock3 = this.physics.add.sprite(this.goldRock3Object.x, this.goldRock3Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock3Object.data.destroyed) && (Math.abs(player.body.x - goldRock3.body.x) < 40) && (Math.abs(player.body.y - goldRock3.body.y) < 50) ) {
+        goldRock3.destroy()
         this.goldRock3Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
       // Check for rock 4
-      if ((Math.abs(player.body.x - goldRock4.body.x) < 40) && (Math.abs(player.body.y - goldRock4.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock4 = this.physics.add.sprite(this.goldRock4Object.x, this.goldRock4Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock4Object.data.destroyed) && (Math.abs(player.body.x - goldRock4.body.x) < 40) && (Math.abs(player.body.y - goldRock4.body.y) < 50) ) {
+        goldRock4.destroy()
         this.goldRock4Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
       // Check for rock 5
-      if ((Math.abs(player.body.x - goldRock5.body.x) < 40) && (Math.abs(player.body.y - goldRock5.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock5 = this.physics.add.sprite(this.goldRock5Object.x, this.goldRock5Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock5Object.data.destroyed) && (Math.abs(player.body.x - goldRock5.body.x) < 40) && (Math.abs(player.body.y - goldRock5.body.y) < 50) ) {
+        goldRock5.destroy()
         this.goldRock5Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
       // Check for rock 6
-      if ((Math.abs(player.body.x - goldRock6.body.x) < 40) && (Math.abs(player.body.y - goldRock6.body.y) < 40) && player.data.inventory.pickaxe) {
-        this.goldRock6 = this.physics.add.sprite(this.goldRock6Object.x, this.goldRock6Object.y, 'rocks', 226)
+      if ((player.data.inventory.pickaxe && !this.goldRock6Object.data.destroyed) && (Math.abs(player.body.x - goldRock6.body.x) < 40) && (Math.abs(player.body.y - goldRock6.body.y) < 50) ) {
+        goldRock6.destroy()
         this.goldRock6Object.data.destroyed = true;
         player.data.inventory.gold += 1;
-        console.log(player)
+        console.log(player.data.inventory.gold)
       }
      }
 
