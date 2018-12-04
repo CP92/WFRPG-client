@@ -1,7 +1,7 @@
 import phaser from 'phaser';
 const saver = require('./../game/save')
 const store = require('./../store')
-const auth = require('./../auth/events')
+//const auth = require('./../auth/events')
  
 let player;
   let cursors;
@@ -28,6 +28,7 @@ let player;
   let goldRock5;
   let goldRock6;
   let saveText;
+  //let waitTimerEvent;
   let showDebug = false
 
 export default class GameScene extends phaser.Scene {
@@ -36,6 +37,10 @@ export default class GameScene extends phaser.Scene {
     //this.saveText;
   }
  
+  end () {
+    this.sys.game.destroy(true)
+  }
+
   
 
   preload () {
@@ -45,7 +50,11 @@ export default class GameScene extends phaser.Scene {
   }
  
   create () {
-    
+    function getRandomMaxDamage() {
+      return Math.floor(Math.random() * Math.floor(10));
+    }
+
+     
     //this.add.image(400, 300, 'logo');
     const map = this.make.tilemap({ key: 'map'})
 
@@ -60,7 +69,7 @@ export default class GameScene extends phaser.Scene {
     //chestLayer.setCollisionByProperty({ collides: true })
 
     const aboveLayer = map.createStaticLayer('Top', tileset, 0, 0)
-    aboveLayer.setDepth(10);
+    //aboveLayer.setDepth(10);
     console.log(store.playerData)
     // Get chest objects from map
     this.swordChestObject = map.findObject('Objects', obj => obj.name === 'Sword Chest');
@@ -74,22 +83,34 @@ export default class GameScene extends phaser.Scene {
     this.goldRock5Object = map.findObject('Objects', obj => obj.name === 'Gold Rock 5');
     this.goldRock6Object = map.findObject('Objects', obj => obj.name === 'Gold Rock 6');
     this.goldRock1Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }
     this.goldRock2Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }
     this.goldRock3Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }
     this.goldRock4Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }
     this.goldRock5Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }
     this.goldRock6Object.data = {
-      destroyed: false
+      damage: getRandomMaxDamage(),
+      destroyed: false,
+      wait: false
     }    
     // Default spawn point
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
@@ -132,14 +153,14 @@ export default class GameScene extends phaser.Scene {
       }
 
       player = this.physics.add.sprite(store.playerData.players.x, store.playerData.players.y, 'atlas', 'misa-front').setSize(30, 40).setOffset(0, 24);
-      player.data = {
-      inventory: {
-        bow: store.playerData.players.bow,
-        sword: store.playerData.players.sword,
-        pickaxe: store.playerData.players.pickaxe,
-        gold: store.playerData.players.gold
-      }
-    }
+      player.setData( {
+            inventory: {
+              bow: store.playerData.players.bow,
+              sword: store.playerData.players.sword,
+              pickaxe: store.playerData.players.pickaxe,
+              gold: store.playerData.players.gold
+            }
+          } )
 
     } else {    
 
@@ -164,14 +185,14 @@ export default class GameScene extends phaser.Scene {
     }
     //Add player sprite
     player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'misa-front').setSize(30, 40).setOffset(0, 24);
-    player.data = {
-      inventory: {
-        bow: false,
-        sword: false,
-        pickaxe: false,
-        gold: 0
-      }
-    }
+    player.setData({
+          inventory: {
+            bow: false,
+            sword: false,
+            pickaxe: false,
+            gold: 0
+          }
+        })
     //Chest sprites
     spriteSwordChest = this.physics.add.sprite(this.swordChestObject.x, this.swordChestObject.y, 'chests', 0)
     spriteBowChest = this.physics.add.sprite(this.bowChestObject.x, this.bowChestObject.y, 'chests', 0)
@@ -261,16 +282,18 @@ export default class GameScene extends phaser.Scene {
     
     // saveText.setOrigin(0.5, 0.5)
     saveTimeEvent = this.time.addEvent({ delay: 30000, repeat: -1, callback: saveGame, callbackScope: this })
+
+    
     
     function saveGame () {
       //console.log('save triggered')
       if (store.playerData) {
-        saver.setUpdateSave(store.playerData.players._id, player.data.inventory.bow, player.data.inventory.pickaxe, player.data.inventory.sword, player.body.x, player.body.y, player.data.inventory.gold)
+        saver.setUpdateSave(store.playerData.players._id, player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold)
         //.then(response => console.log(response))
         console.log('Updated')
         //saveText.setText('Save updated!')
       } else {
-        saver.setNewSave(player.data.inventory.bow, player.data.inventory.pickaxe, player.data.inventory.sword, player.body.x, player.body.y, player.data.inventory.gold)
+        saver.setNewSave(player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold)
         .then(response => console.log(response))
         console.log('New save')
         //saveText.setText('New save created!')
@@ -278,13 +301,25 @@ export default class GameScene extends phaser.Scene {
           
     }
 
-    saveText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });  
+
+
+    saveText = this.add.text(400, 300, 'Saved', { fontSize: '32px', fill: '#000000' });
+    saveText.setDepth(100)  
   }
 
+
+
   update (time, delta) {
+    
     const speed = 175;
       const prevVelocity = player.body.velocity.clone();
       
+      function removeWaitTimer(object) {
+      console.log(object.data.wait)
+      console.log('wait over')
+      object.data.wait = false;
+      console.log(object)
+    } 
 
       //saveText.setText('works')
 
@@ -306,62 +341,83 @@ export default class GameScene extends phaser.Scene {
       if ((Math.abs(player.body.x - spriteSwordChest.body.x) < 20) && ((player.body.y - spriteSwordChest.body.y) < 40)) {
         this.spriteSwordChest = this.physics.add.sprite(this.swordChestObject.x, this.swordChestObject.y, 'chests', 1)
         this.swordChestObject.data.state.opened = true;
-        player.data.inventory.sword = true;
+        player.data.values.inventory.sword = true;
       }
       //console.log(player.body.y)
       //console.log(spriteSwordChest.body.y)
       if ((Math.abs(player.body.x - spriteBowChest.body.x) < 20) && ((player.body.y - spriteBowChest.body.y) < 40)) {
         this.spriteBowChest = this.physics.add.sprite(this.bowChestObject.x, this.bowChestObject.y, 'chests', 1)
         this.bowChestObject.data.state.opened = true;
-        player.data.inventory.bow = true;
+        player.data.values.inventory.bow = true;
       }
       
       if ((Math.abs(player.body.x - spritePickaxeChest.body.x) < 20) && ((player.body.y - spritePickaxeChest.body.y) < 40)) {
         this.spritePickaxeChest = this.physics.add.sprite(this.pickaxeChestObject.x, this.pickaxeChestObject.y, 'chests', 1)
         this.pickaxeChestObject.data.state.opened = true;
-        player.data.inventory.pickaxe = true;
+        player.data.values.inventory.pickaxe = true;
       }
       // Check for rock 1
-      if ((player.data.inventory.pickaxe && !this.goldRock1Object.data.destroyed) && (Math.abs(player.body.x - goldRock1.body.x) < 40) && (Math.abs(player.body.y - goldRock1.body.y) < 50)) {
-        goldRock1.destroy()
-        this.goldRock1Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock1Object.data.destroyed && !this.goldRock1Object.data.wait) && (Math.abs(player.body.x - goldRock1.body.x) < 40) && (Math.abs(player.body.y - goldRock1.body.y) < 50)) {
+        this.goldRock1Object.data.damage -= 1;
+        console.log(this.goldRock1Object.data.wait)
+        this.goldRock1Object.data.wait = true;
+        let waitTimerEvent = this.time.addEvent({ delay: 100000, callback: removeWaitTimer(this.goldRock1Object), callbackScope: this })
+        if (this.goldRock1Object.data.damage <= 0){
+                goldRock1.destroy()
+                this.goldRock1Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
       // Check for rock 2
-      if ((player.data.inventory.pickaxe && !this.goldRock2Object.data.destroyed) && (Math.abs(player.body.x - goldRock2.body.x) < 40) && (Math.abs(player.body.y - goldRock2.body.y) < 50) ) {
-        goldRock2.destroy()
-        this.goldRock2Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock2Object.data.destroyed) && (Math.abs(player.body.x - goldRock2.body.x) < 40) && (Math.abs(player.body.y - goldRock2.body.y) < 50) ) {
+        this.goldRock2Object.data.damage -= 1;
+        if (this.goldRock2Object.data.damage <= 0){
+                goldRock2.destroy()
+                this.goldRock2Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
       // check for rock 3
-      if ((player.data.inventory.pickaxe && !this.goldRock3Object.data.destroyed) && (Math.abs(player.body.x - goldRock3.body.x) < 40) && (Math.abs(player.body.y - goldRock3.body.y) < 50) ) {
-        goldRock3.destroy()
-        this.goldRock3Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock3Object.data.destroyed) && (Math.abs(player.body.x - goldRock3.body.x) < 40) && (Math.abs(player.body.y - goldRock3.body.y) < 50) ) {
+        this.goldRock3Object.data.damage -= 1
+        if (this.goldRock3Object.data.damage === 0){
+                goldRock3.destroy()
+                this.goldRock3Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
       // Check for rock 4
-      if ((player.data.inventory.pickaxe && !this.goldRock4Object.data.destroyed) && (Math.abs(player.body.x - goldRock4.body.x) < 40) && (Math.abs(player.body.y - goldRock4.body.y) < 50) ) {
-        goldRock4.destroy()
-        this.goldRock4Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock4Object.data.destroyed) && (Math.abs(player.body.x - goldRock4.body.x) < 40) && (Math.abs(player.body.y - goldRock4.body.y) < 50) ) {
+        this.goldRock4Object.data.damage -= 1
+        if (this.goldRock4Object.data.damage === 0){
+                goldRock4.destroy()
+                this.goldRock4Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
       // Check for rock 5
-      if ((player.data.inventory.pickaxe && !this.goldRock5Object.data.destroyed) && (Math.abs(player.body.x - goldRock5.body.x) < 40) && (Math.abs(player.body.y - goldRock5.body.y) < 50) ) {
-        goldRock5.destroy()
-        this.goldRock5Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock5Object.data.destroyed) && (Math.abs(player.body.x - goldRock5.body.x) < 40) && (Math.abs(player.body.y - goldRock5.body.y) < 50) ) {
+        this.goldRock5Object.data.damage -= 1
+        if (this.goldRock5Object.data.damage === 0){
+                goldRock5.destroy()
+                this.goldRock5Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
       // Check for rock 6
-      if ((player.data.inventory.pickaxe && !this.goldRock6Object.data.destroyed) && (Math.abs(player.body.x - goldRock6.body.x) < 40) && (Math.abs(player.body.y - goldRock6.body.y) < 50) ) {
-        goldRock6.destroy()
-        this.goldRock6Object.data.destroyed = true;
-        player.data.inventory.gold += 1;
-        console.log(player.data.inventory.gold)
+      if ((player.data.values.inventory.pickaxe && !this.goldRock6Object.data.destroyed) && (Math.abs(player.body.x - goldRock6.body.x) < 40) && (Math.abs(player.body.y - goldRock6.body.y) < 50) ) {
+        this.goldRock6Object.data.damage -= 1
+        if (this.goldRock6Object.data.damage === 0){
+                goldRock6.destroy()
+                this.goldRock6Object.data.destroyed = true;
+                }
+        player.data.values.inventory.gold += 1;
+        console.log(player.data.values.inventory.gold)
       }
      }
 

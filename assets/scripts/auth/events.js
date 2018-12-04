@@ -2,6 +2,7 @@ const getFormFields = require('../../../lib/get-form-fields')
 const api = require('./api.js')
 const ui = require('./ui.js')
 const save = require('./../game/save')
+//import gameScene from './../scenes/gamescene'
 
 const onSignUp = function (event) {
   event.preventDefault()
@@ -32,6 +33,7 @@ const onChangePassword = function (event) {
 
 const onSignOut = function (event) {
   event.preventDefault()
+  //gameScene.end()
   api.signOut()
     .then(ui.signOutSuccess)
     .catch(ui.signOutFailure)

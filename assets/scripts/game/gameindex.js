@@ -16,15 +16,15 @@ class Game extends phaser.Game {
     this.scene.add('Title', TitleScene);
     this.scene.add('Game', GameScene);
     this.scene.add('Pause', PauseScene)
-    //this.scene.start('Boot');
-    scene = this
+    this.scene.start('Boot');
+    //scene = this
   }
 }
  
-window.game = new Game();
 
 const start = function () { 
-	scene.scene.start('Boot')
+	window.game = new Game();
+	
 }
 
 const end = function () {
