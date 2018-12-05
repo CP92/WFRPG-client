@@ -6,11 +6,16 @@ import phaser from 'phaser';
 	const tilemap = require('../../Tilemaps/WFRPG_center_map.json')
 	const atlasImage = require('../../atlas/atlas.png')
 	const atlasJson = require('../../atlas/atlas.json')
+  const skellyAtlasImage = require('../../atlas/skelly.png')
+  const skellyAtlasJson = require('../../atlas/skelly.json')
 	const chest = require('../../tilesets/chest2.png')
   const uiPanel = require('../../images/UIpack_RPG/PNG/panel_beige.png')
   const brownX = require('../../images/UIpack_RPG/PNG/iconCross_brown.png')
   const greyButton = require('../../images/UIpack_RPG/PNG/buttonRound_grey.png')
   const brownButton = require('../../images/UIpack_RPG/PNG/buttonRound_brown.png')
+  const goldSheet = require('../../tilesets/gold-stack-sheet.png')
+  const tools = require('../../tilesets/IconsPJ - 24px.png')
+
 
 export default class PreloaderScene extends phaser.Scene {
   constructor () {
@@ -25,6 +30,7 @@ ready () {
   this.readyCount++;
   if (this.readyCount === 2) {
     this.scene.start('Game');
+    this.scene.start('Ui')
   }
 }
  
@@ -110,6 +116,7 @@ ready () {
     	this.load.tilemapTiledJSON('map', tilemap);
 
     	this.load.atlas('atlas', atlasImage, atlasJson)
+      this.load.atlas('skellyAtlas', skellyAtlasImage, skellyAtlasJson)
 
     	this.load.spritesheet('chests', chest, { frameWidth: 32, frameHeight: 32 });
 
@@ -117,6 +124,9 @@ ready () {
       this.load.image('brwnX', brownX)
       this.load.image('greyBtn', greyButton)
       this.load.image('brownBtn', brownButton)
+      //this.load.image('gold1', gold1)
+      this.load.spritesheet('golds', goldSheet, { frameWidth: 64, frameHeight: 64 })
+      this.load.spritesheet('tools', tools, { frameWidth: 24, frameHeight: 24 })
   }
  
   create () {

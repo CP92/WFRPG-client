@@ -5,6 +5,7 @@ import BootScene from './../scenes/bootscene';
 import PreloaderScene from './../scenes/preloaderscene';
 import TitleScene from './../scenes/titlescene';
 import PauseScene from './../scenes/pausescene';
+import UiScene from './../scenes/uiscene';
  
 let scene;
 
@@ -16,6 +17,7 @@ class Game extends phaser.Game {
     this.scene.add('Title', TitleScene);
     this.scene.add('Game', GameScene);
     this.scene.add('Pause', PauseScene)
+    this.scene.add('Ui', UiScene )
     this.scene.start('Boot');
     //scene = this
   }

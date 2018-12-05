@@ -175,40 +175,40 @@
                  "type":"",
                  "visible":true,
                  "width":29,
-                 "x":2433.33333333333,
+                 "x":2433.33,
                  "y":1633
                 }, 
                 {
-                 "height":29.6666666666665,
+                 "height":29.6667,
                  "id":22,
                  "name":"Gold Rock 4",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":28.3333333333335,
-                 "x":2465.66666666667,
-                 "y":1696.66666666667
+                 "width":28.3333,
+                 "x":2465.67,
+                 "y":1696.67
                 }, 
                 {
-                 "height":30.3333333333333,
+                 "height":30.3333,
                  "id":23,
                  "name":"Gold Rock 3",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":30.666666666667,
-                 "x":2528.33333333333,
-                 "y":1664.66666666667
+                 "width":30.6667,
+                 "x":2528.33,
+                 "y":1664.67
                 }, 
                 {
-                 "height":29.6666666666667,
+                 "height":29.6667,
                  "id":24,
                  "name":"Gold Rock 5",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":28.9999999999995,
-                 "x":2401.33333333333,
+                 "width":29,
+                 "x":2401.33,
                  "y":1761
                 }, 
                 {
@@ -223,18 +223,30 @@
                  "y":1761
                 }, 
                 {
-                 "height":28.9999999999998,
+                 "height":29,
                  "id":26,
                  "name":"Gold Rock 1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":29.3333333333335,
+                 "width":29.3333,
                  "x":2497,
-                 "y":1569.66666666667
+                 "y":1569.67
+                }, 
+                {
+                 "height":0,
+                 "id":27,
+                 "name":"Skelly Spawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":398.333333,
+                 "y":1744.33333
                 }],
-         "offsetx":0.666666666666515,
-         "offsety":4.66666666666652,
+         "offsetx":0.666667,
+         "offsety":4.66667,
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -242,7 +254,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":27,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.1",
@@ -6531,7 +6543,7 @@
          "margin":1,
          "name":"Rocks",
          "spacing":2,
-         "tilecount":775,
+         "tilecount":720,
          "tileheight":32,
          "tilewidth":32
         }],
