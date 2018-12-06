@@ -1,6 +1,6 @@
 import phaser from 'phaser';
 
-const auth = require('./../auth/events.js')
+const auth = require('../auth/events')
 let actionKey;
  
 export default class PauseScene extends phaser.Scene {
@@ -32,8 +32,9 @@ export default class PauseScene extends phaser.Scene {
 
     logOutButton.on('pointerdown', function (pointer) {
       //this.canvas.remove()
+      outPort()
       window.game.destroy(true)
-      auth.onSignOut()
+      
       //window.game = null
     }, this)
 
@@ -47,3 +48,7 @@ export default class PauseScene extends phaser.Scene {
     
   }
 };
+
+function outPort () {
+  auth.onSignOut()
+}

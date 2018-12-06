@@ -37,45 +37,33 @@ let saveText
 let rockGroup
 let goldStack
 let skellies;
+let skelly1Sprite;
+let skelly2Sprite;
+let skelly3Sprite;
+let skelly4Sprite;
+let skelly5Sprite;
 let waitMineTime = 0
 const showDebug = false
 
 export default class GameScene extends phaser.Scene {
   constructor () {
     super('Game')
-    // this.saveText;
-  }
-
-  end () {
-    this.sys.game.destroy(true)
-  }
-
-  preload () {
-    // load images
-    // this.load.image('logo', 'assets/logo.png');
-
+    
   }
 
   create () {
-    // this.add.image(400, 300, 'logo');
+    
     const map = this.make.tilemap({ key: 'map' })
 
     const tileset = map.addTilesetImage('WFRPG_center', 'tiles')
-    // const chestset = map.addTilesetImage('Chest', 'chests')
-
+    
     const belowLayer = map.createStaticLayer('Bottom', tileset, 0, 0)
     const worldLayer = map.createStaticLayer('World', tileset, 0, 0)
-    // const chestLayer = map.createStaticLayer('Chest', chestset, 0, 1)
     // set collisions to true and watch the player for collisions
     worldLayer.setCollisionByProperty({ collides: true })
-    // chestLayer.setCollisionByProperty({ collides: true })
-
+    
     const aboveLayer = map.createStaticLayer('Top', tileset, 0, 0)
 
-    // goldStack = this.add.sprite(2, 2, 'golds', 0)
-
-    // aboveLayer.setDepth(10);
-    console.log(store.playerData)
     // Get chest objects from map
     this.swordChestObject = map.findObject('Objects', obj => obj.name === 'Sword Chest')
     this.bowChestObject = map.findObject('Objects', obj => obj.name === 'Bow Chest')
@@ -116,7 +104,7 @@ export default class GameScene extends phaser.Scene {
     const skellySpawn = map.findObject('Objects', obj => obj.name === 'Skelly Spawn')
     // Load save data if exists
     if (store.playerData) {
-      console.log(store.playerData.players._id)
+      //console.log(store.playerData.players._id)
       // Check if player has the sword and set the chest to opened if it does
       this.swordChestObject.data = {
         state: {
@@ -158,7 +146,8 @@ export default class GameScene extends phaser.Scene {
           sword: store.playerData.players.sword,
           pickaxe: store.playerData.players.pickaxe,
           gold: store.playerData.players.gold
-        }
+        },
+        hp: store.playerData.players.hp
       })
       // Enemy groups
     } else {
@@ -189,7 +178,8 @@ export default class GameScene extends phaser.Scene {
           sword: false,
           pickaxe: false,
           gold: 0
-        }
+        },
+        hp: 20
       })
      
       // Chest sprites
@@ -197,7 +187,7 @@ export default class GameScene extends phaser.Scene {
       spriteBowChest = this.physics.add.sprite(this.bowChestObject.x, this.bowChestObject.y, 'chests', 0)
       spritePickaxeChest = this.physics.add.sprite(this.pickaxeChestObject.x, this.pickaxeChestObject.y, 'chests', 0)
       saveGame()
-      console.log(store.playerData)
+      //console.log(store.playerData)
     }
     goldRock1 = this.physics.add.sprite(this.goldRock1Object.x, this.goldRock1Object.y, 'rocks', 224).setTint(0xffd700)
     goldRock2 = this.physics.add.sprite(this.goldRock2Object.x, this.goldRock2Object.y, 'rocks', 224).setTint(0xffd700)
@@ -206,19 +196,16 @@ export default class GameScene extends phaser.Scene {
     goldRock5 = this.physics.add.sprite(this.goldRock5Object.x, this.goldRock5Object.y, 'rocks', 224).setTint(0xffd700)
     goldRock6 = this.physics.add.sprite(this.goldRock6Object.x, this.goldRock6Object.y, 'rocks', 224).setTint(0xffd700)
 
-    //Enemy groups
+    
      // Skelly gen group
-      this.skellies = this.add.group({
-        key: 'skellyAtlas',
-        frame: 'skelly-idle.000',
-        repeat: 4,
-        setXY: {
-          x: skellySpawn.x,
-          y: skellySpawn.y,
-          stepX: randomSkellySpawn(),
-          stepY: randomSkellySpawn()
-        }
-      })
+      this.skellies = this.add.group()
+      this.skellies.addMultiple([
+        skelly1Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5),
+        skelly2Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5),
+        skelly3Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5),
+        skelly4Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5),
+        skelly5Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5)
+      ])
 
     // make them immovable
     spriteSwordChest.body.setImmovable(true)
@@ -241,6 +228,14 @@ export default class GameScene extends phaser.Scene {
     this.physics.add.collider(player, goldRock4)
     this.physics.add.collider(player, goldRock5)
     this.physics.add.collider(player, goldRock6)
+    this.physics.add.collider(skelly1Sprite, worldLayer)    
+    this.physics.add.collider(skelly2Sprite, worldLayer)
+    this.physics.add.collider(skelly3Sprite, worldLayer)
+    this.physics.add.collider(skelly4Sprite, worldLayer)
+    this.physics.add.collider(skelly5Sprite, worldLayer)
+    // Add overlap
+    this.physics.add.overlap(player, skellies) 
+       
     // Add rocks to group
     this.rockGroup = this.add.group()
     this.rockGroup.addMultiple([goldRock1, goldRock2, goldRock3, goldRock4, goldRock5, goldRock6])
@@ -248,7 +243,7 @@ export default class GameScene extends phaser.Scene {
     // this.physics.add.collider(player, chestLayer);
     // Player animations
     const anims = this.anims
-    console.log(anims)
+    //console.log(anims)
     anims.create({
       key: 'misa-left-walk',
       frames: anims.generateFrameNames('atlas', { prefix: 'misa-left-walk.', start: 0, end: 3, zeroPad: 3 }),
@@ -288,18 +283,21 @@ export default class GameScene extends phaser.Scene {
       frameRate: 10,
       repeat: -1
     })
-    anims.create({
+    let animConfig = {
       key: 'skelly-attack',
       frames: anims.generateFrameNames('skellyAtlas', { prefix: 'skelly-attack.', start: 0, end: 9, zeroPad: 3 }),
       frameRate: 10,
-      repeat: -1
-    })
+      repeat: -1,
+      onUpdate: attackFrameUpdateCallback
+    }
+    anims.create(animConfig)
     anims.create({
       key: 'skelly-death',
       frames: anims.generateFrameNames('skellyAtlas', { prefix: 'skelly-death.', start: 0, end: 9, zeroPad: 3 }),
       frameRate: 10,
       repeat: -1
     })
+        
 
     // Camera controls for following the character
     const camera = this.cameras.main
@@ -307,9 +305,7 @@ export default class GameScene extends phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels,
       map.heightInPixels)
 
-    // cursors = this.input.keyboard.createCursorKeys()
-
-    actionKey = this.input.keyboard.addKeys('E,W,A,S,D,P')
+    actionKey = this.input.keyboard.addKeys('E,W,A,S,D,P,SPACE')
 
     // Turn debugger on
     this.input.keyboard.once('keydown_K', event => {
@@ -329,17 +325,21 @@ export default class GameScene extends phaser.Scene {
     function saveGame () {
       // console.log('save triggered')
       if (store.playerData) {
-        saver.setUpdateSave(store.playerData.players._id, player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold)
+        saver.setUpdateSave(store.playerData.players._id, player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold, player.data.values.hp)
         // .then(response => console.log(response))
-        console.log('Updated')
+        //console.log('Updated')
         // saveText.setText('Save updated!')
       } else {
-        saver.setNewSave(player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold)
+        saver.setNewSave(player.data.values.inventory.bow, player.data.values.inventory.pickaxe, player.data.values.inventory.sword, player.body.x, player.body.y, player.data.values.inventory.gold, player.data.values.hp)
           .then(response => console.log(response))
-        console.log('New save')
+        //console.log('New save')
         // saveText.setText('New save created!')
       }
     }
+
+    function attackFrameUpdateCallback (sprite, animation) {
+      console.log('Triggered')
+  }
 
     // waitTimerEvent = this.time.addEvent({ delay: 1000, repeat: -1, callback: removeWaitTimer(this.goldRock1Object), callbackScope: this })
 
@@ -349,13 +349,16 @@ export default class GameScene extends phaser.Scene {
 
   update (time, delta) {
     const playerSpeed = 175
-    const skellySpeed = 125
+    
     const playerPrevVelocity = player.body.velocity.clone()
 
     // saveText.setText('works')
 
     // Stop any previous movement from the last frame
     player.body.setVelocity(0)
+    if (phaser.Input.Keyboard.JustDown(actionKey.SPACE)) {
+      
+    }
 
     if (phaser.Input.Keyboard.JustDown(actionKey.P)) {
       this.scene.switch('Pause')
@@ -520,7 +523,7 @@ export default class GameScene extends phaser.Scene {
         console.log(player.data.values.inventory.gold)
       }
     }
-
+    
     // Horizontal movement
     if (actionKey.A.isDown) {
       player.body.setVelocityX(-playerSpeed)
@@ -556,9 +559,40 @@ export default class GameScene extends phaser.Scene {
 
     let enemies = this.skellies.getChildren();
     let numEnemies = enemies.length;
+    const skellySpeed = 125
+
+
 
     for (let i = 0; i < numEnemies; i++) {
-      enemies[i].anims.play('skelly-idle', true)
+      //console.log(enemies[i])
+      enemies[i].body.setVelocity(0)
+      if ((Math.abs(Math.floor(player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(player.body.y - enemies[i].body.y)) < 20)) {
+        enemies[i].anims.play('skelly-attack', true)
+        let attack = player.body.touching.none ? 'Hit' : ''
+        console.log(attack)
+      } else if ((Math.abs(Math.floor(player.body.x - enemies[i].body.x)) < 300) && (Math.abs(Math.floor(player.body.y - enemies[i].body.y)) < 300)) {
+        //console.log(Math.abs(player.body.x))
+        //console.log(Math.abs(player.body.y))
+        if (player.body.x < enemies[i].body.x) {
+          enemies[i].body.setVelocityX(-skellySpeed)
+          enemies[i].anims.play('skelly-walk', true).setFlipX(true)
+        } else if (player.body.x > enemies[i].body.x) {
+          enemies[i].body.setVelocityX(skellySpeed)
+          enemies[i].anims.play('skelly-walk', true).setFlipX(false)
+        }
+
+        if (player.body.y < enemies[i].body.y) {
+          enemies[i].body.setVelocityY(-skellySpeed)
+          enemies[i].anims.play('skelly-walk', true)
+        } else if (player.body.y > enemies[i].body.y) {
+          enemies[i].body.setVelocityY(skellySpeed)
+          enemies[i].anims.play('skelly-walk', true)
+        }
+        enemies[i].body.velocity.normalize().scale(skellySpeed)
+        
+    } else {
+        enemies[i].anims.play('skelly-idle', true)
+      }
     }
 
     if (player.data.values.inventory.pickaxe && !store.pickFrameSet) {
@@ -587,5 +621,7 @@ function getRandomGold () {
 }
 
 function randomSkellySpawn () {
-  return phaser.Math.RND.between(32, 128)
+  return phaser.Math.RND.between(64, (128 * 4))
 }
+
+

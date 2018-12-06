@@ -33,7 +33,7 @@ const onChangePassword = function (event) {
 
 const onSignOut = function (event) {
   event.preventDefault()
-  //gameScene.end()
+  window.game.destroy(true)
   api.signOut()
     .then(ui.signOutSuccess)
     .catch(ui.signOutFailure)
@@ -41,6 +41,7 @@ const onSignOut = function (event) {
 
 const onDeleteSave = function () {
   event.preventDefault()
+  window.game.destroy(true)
   save.setDeleteSave()
     .then(ui.deleteSuccess)
     .catch()

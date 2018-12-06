@@ -79,7 +79,9 @@ const signOutFailure = function () {
 const deleteSuccess = function () {
   $('#display-message').html('').hide()
   $('#display-message').css('color', 'green')
-  $('#display-message').text(`Welcome, ${store.user.email}`).fadeToggle().delay(2000).fadeToggle()
+  $('#display-message').text(`Save deleted`).fadeToggle().delay(2000).fadeToggle()
+  gameIndex.start()
+
 }
 
 module.exports = {
@@ -90,5 +92,6 @@ module.exports = {
   changePasswordSuccess,
   changePasswordFailure,
   signOutSuccess,
-  signOutFailure
+  signOutFailure,
+  deleteSuccess
 }

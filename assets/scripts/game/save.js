@@ -11,7 +11,7 @@ const getSave = function () {
   })
 }
 
-const setNewSave = function (bow, pickaxe, sword, x, y, gold) {
+const setNewSave = function (bow, pickaxe, sword, x, y, gold, hp) {
   return $.ajax({
     url: config.apiUrl + '/players',
     headers: {
@@ -25,13 +25,14 @@ const setNewSave = function (bow, pickaxe, sword, x, y, gold) {
         sword: sword,
         x: x,
         y: y,
-        gold: gold
+        gold: gold,
+        hp: hp
       }
     }
   })
 }
 
-const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold) {
+const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold, hp) {
   return $.ajax({
     url: config.apiUrl + `/players/${id}`,
     headers: {
@@ -45,7 +46,8 @@ const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold) {
         sword: sword,
         x: x,
         y: y,
-        gold: gold
+        gold: gold,
+        hp: hp
     }
   }
   })

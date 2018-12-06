@@ -8,7 +8,9 @@ import phaser from 'phaser';
 	const atlasJson = require('../../atlas/atlas.json')
   const skellyAtlasImage = require('../../atlas/skelly.png')
   const skellyAtlasJson = require('../../atlas/skelly.json')
-	const chest = require('../../tilesets/chest2.png')
+  const knifeAtlasImage = require('../../atlas/knifesheet.png')
+  const knifeAtlasJson = require('../../atlas/knifesheet.json')
+  const chest = require('../../tilesets/chest2.png')
   const uiPanel = require('../../images/UIpack_RPG/PNG/panel_beige.png')
   const brownX = require('../../images/UIpack_RPG/PNG/iconCross_brown.png')
   const greyButton = require('../../images/UIpack_RPG/PNG/buttonRound_grey.png')
@@ -117,6 +119,7 @@ ready () {
 
     	this.load.atlas('atlas', atlasImage, atlasJson)
       this.load.atlas('skellyAtlas', skellyAtlasImage, skellyAtlasJson)
+      this.load.atlas('knifeAtlas', knifeAtlasImage, knifeAtlasJson)
 
     	this.load.spritesheet('chests', chest, { frameWidth: 32, frameHeight: 32 });
 

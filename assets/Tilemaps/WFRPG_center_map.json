@@ -242,8 +242,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":398.333333,
-                 "y":1744.33333
+                 "x":398.333,
+                 "y":1744.33
                 }],
          "offsetx":0.666667,
          "offsety":4.66667,
@@ -342,6 +342,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -558,6 +563,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -774,6 +784,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -990,6 +1005,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1206,6 +1226,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1404,6 +1429,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1413,6 +1443,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1422,6 +1457,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1611,6 +1651,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1620,6 +1665,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1629,6 +1679,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1638,6 +1693,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1827,6 +1887,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1836,6 +1901,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1845,6 +1915,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -1854,6 +1929,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -2043,6 +2123,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -2052,6 +2137,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -2061,6 +2151,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
@@ -2070,6 +2165,11 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"cost",
+                         "type":"int",
+                         "value":1
                         }]
                 }, 
                 {
