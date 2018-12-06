@@ -4,9 +4,12 @@ import config from './../config/config'
 const store = require('../store')
 
 let goldCount;
-let info;
+let goldInfo;
 let goldIcon;
 let pickIcon;
+let topBar;
+let burger;
+let burgerInfo;
 
 export default class UiScene extends phaser.Scene {
 
@@ -22,18 +25,22 @@ export default class UiScene extends phaser.Scene {
     {   
         //  Grab a reference to the Game Scene
         let ourGame = this.scene.get('Game');
+        let shop = this.scene.get('Shop');
 
+        topBar = this.add.image(400, 25, 'whiteBtn').setScale(4.5,1)
         
         
         goldIcon = this.add.sprite(40, 20, 'golds', 0).setScale(1)
 
         
         //  Our Text object to display the Score
-        info = this.add.text(goldIcon.x + 10, goldIcon.y - 5, '', { font: '24px Arial', fill: '#000000' });
+        goldInfo = this.add.text(goldIcon.x + 10, goldIcon.y - 5, '', { font: '24px Arial', fill: '#000000' });
 
+        burger = this.add.sprite(goldInfo.x + 50, goldInfo.y + 10, 'burger')
         
+        burgerInfo = this.add.text(burger.x + 10, burger.y - 5, '', { font: '24px Arial', fill: '#000000' });
 
-            //pickIcon = this.add.sprite(info.getBottomRight().x + 80, info.getBottomRight().y + 10, 'tools')
+            //pickIcon = this.add.sprite(goldInfo.getBottomRight().x + 80, goldInfo.getBottomRight().y + 10, 'tools')
         pickIcon = this
           
 
@@ -73,8 +80,12 @@ export default class UiScene extends phaser.Scene {
 
             goldIcon.setFrame(goldCount)
             
-            info.setText('' + this.gold);
+            goldInfo.setText('' + this.gold);
 
         }, this);
+
+        shop.events.on('addFood', function () {
+            burgerInfo.setText('' + ourGame.player.data.values.inventory.food)
+        }, this)
     }
 }

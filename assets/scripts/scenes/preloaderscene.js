@@ -15,6 +15,8 @@ import phaser from 'phaser';
   const brownX = require('../../images/UIpack_RPG/PNG/iconCross_brown.png')
   const greyButton = require('../../images/UIpack_RPG/PNG/buttonRound_grey.png')
   const brownButton = require('../../images/UIpack_RPG/PNG/buttonRound_brown.png')
+  const whiteButton = require('../../images/UIpack_RPG/PNG/buttonLong_grey.png')
+  const burger = require('../../images/UIpack_RPG/PNG/baconcheeseburger1.png')
   const goldSheet = require('../../tilesets/gold-stack-sheet.png')
   const tools = require('../../tilesets/IconsPJ - 24px.png')
 
@@ -42,9 +44,13 @@ ready () {
 
     // Get player data
     store.playerData = null
-    console.log(store.playerData)
+    //console.log(store.playerData)
     saver.getSave()
-      .then(response => store.playerData = response)
+      .then((response) => {
+        store.playerData = response.players
+        //console.log(store.playerData)
+      })
+
   	// display progress bar
   var progressBar = this.add.graphics();
   var progressBox = this.add.graphics();
@@ -127,6 +133,8 @@ ready () {
       this.load.image('brwnX', brownX)
       this.load.image('greyBtn', greyButton)
       this.load.image('brownBtn', brownButton)
+      this.load.image('whiteBtn', whiteButton)
+      this.load.image('burger', burger)
       //this.load.image('gold1', gold1)
       this.load.spritesheet('golds', goldSheet, { frameWidth: 64, frameHeight: 64 })
       this.load.spritesheet('tools', tools, { frameWidth: 24, frameHeight: 24 })

@@ -55,7 +55,7 @@ const changePasswordFailure = function () {
 
 const signOutSuccess = function () {
   store.user = null
-  store.playerData = null
+  store.playerData.players = null
   $('#change-password-button, #sign-out-button, #dashboard, .dashbutton, #owner-surveys, #delete-save-button').addClass('hidden')
   $('#sign-up-button, #sign-in-button').removeClass('hidden')
   $('#sign-up-form, #change-password-form, #delete-save-drop-button').collapse('hide')

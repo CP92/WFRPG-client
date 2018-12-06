@@ -11,7 +11,7 @@ const getSave = function () {
   })
 }
 
-const setNewSave = function (bow, pickaxe, sword, x, y, gold, hp) {
+const setNewSave = function (bow, pickaxe, sword, x, y, gold, hp, str, mining, food) {
   return $.ajax({
     url: config.apiUrl + '/players',
     headers: {
@@ -26,13 +26,16 @@ const setNewSave = function (bow, pickaxe, sword, x, y, gold, hp) {
         x: x,
         y: y,
         gold: gold,
-        hp: hp
+        hp: hp,
+        strLvl: str,
+        miningLvl: mining,
+        food: food
       }
     }
   })
 }
 
-const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold, hp) {
+const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold, hp, str, mining, food) {
   return $.ajax({
     url: config.apiUrl + `/players/${id}`,
     headers: {
@@ -47,7 +50,10 @@ const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold, hp) {
         x: x,
         y: y,
         gold: gold,
-        hp: hp
+        hp: hp,
+        strLvl: str,
+        miningLvl: mining,
+        food: food
     }
   }
   })
@@ -55,7 +61,7 @@ const setUpdateSave = function (id, bow, pickaxe, sword, x, y, gold, hp) {
 
 const setDeleteSave = function () {
   return $.ajax({
-    url: config.apiUrl + `/players/${store.playerData.players._id}`,
+    url: config.apiUrl + `/players/${store.playerData._id}`,
     headers: {
       Authorization: `Token token=${store.user.token}`
     },

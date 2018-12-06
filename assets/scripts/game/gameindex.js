@@ -4,7 +4,7 @@ import GameScene from './../scenes/gamescene';
 import BootScene from './../scenes/bootscene';
 import PreloaderScene from './../scenes/preloaderscene';
 import TitleScene from './../scenes/titlescene';
-import PauseScene from './../scenes/pausescene';
+import ShopScene from './../scenes/shopscene';
 import UiScene from './../scenes/uiscene';
  
 let scene;
@@ -16,7 +16,7 @@ class Game extends phaser.Game {
     this.scene.add('Preloader', PreloaderScene);
     this.scene.add('Title', TitleScene);
     this.scene.add('Game', GameScene);
-    this.scene.add('Pause', PauseScene)
+    this.scene.add('Shop', ShopScene)
     this.scene.add('Ui', UiScene )
     this.scene.start('Boot');
     //scene = this
@@ -29,14 +29,4 @@ const start = function () {
 	
 }
 
-const end = function () {
-    game.destroy(true);
-    //game = null;
-    this.renderer.destroy();
-    this.loop.stop()
-    this.canvas.remove()
-  }
-
-
-
-module.exports = {start, end}
+module.exports = {start}
