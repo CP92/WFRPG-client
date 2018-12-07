@@ -63,4 +63,4 @@ The hardest part of this was using the new and incomplete documentation for the 
 
 ## Client image
 
-![client](https://imgur.com/a/X4TyIFY)
+![client](https://i.imgur.com/qDSa611.png)
