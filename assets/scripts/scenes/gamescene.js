@@ -43,6 +43,7 @@ let skelly2Sprite;
 let skelly3Sprite;
 let skelly4Sprite;
 let skelly5Sprite;
+let spawnPoint;
 let skellyTimer = [];
 let waitMineTime = 0
 const showDebug = false
@@ -106,7 +107,7 @@ export default class GameScene extends phaser.Scene {
       destroyed: false
     }
     // Default spawn point
-    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point')
+     this.spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point')
     const skellySpawn = map.findObject('Objects', obj => obj.name === 'Skelly Spawn')
     // Load save data if exists
     //console.log(store.playerData)
@@ -181,7 +182,7 @@ export default class GameScene extends phaser.Scene {
         }
       }
       // Add player sprite
-      this.player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'misa-front').setSize(30, 40).setOffset(0, 24)
+      this.player = this.physics.add.sprite(this.spawnPoint.x, this.spawnPoint.y, 'atlas', 'misa-front').setSize(30, 40).setOffset(0, 24)
       this.player.setData({
         inventory: {
           bow: false,
@@ -401,6 +402,10 @@ export default class GameScene extends phaser.Scene {
     // Stop any previous movement from the last frame
     this.player.body.setVelocity(0)
     
+    if (this.player.data.values.hp <= 0) {
+      this.player.setPosition(this.spawnPoint.x, this.spawnPoint.y)
+      this.player.data.values.hp = 20
+    }
 
     //if (phaser.Input.Keyboard.JustDown(actionKey.E)) {
     //   if ((Math.abs(this.player.body.x - this.statueShopObject.x) < 100) && ((this.player.body.y - this.statueShopObject.y) < 100)) {
