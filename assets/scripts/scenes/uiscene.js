@@ -58,6 +58,7 @@ export default class UiScene extends phaser.Scene {
             //console.log('frame set')
         })
 
+        
 
         ourGame.events.on('addGold', function (inventory) {
                 
@@ -85,7 +86,7 @@ export default class UiScene extends phaser.Scene {
 
             goldIcon.setFrame(goldCount)
             
-            goldInfo.setText('' + this.gold);
+            goldInfo.setText('' + ourGame.player.data.values.inventory.gold);
 
         }, this);
 
@@ -115,7 +116,7 @@ export default class UiScene extends phaser.Scene {
 
             goldIcon.setFrame(goldCount)
             
-            goldInfo.setText('' + this.gold);
+            goldInfo.setText('' + ourGame.player.data.values.inventory.gold);
 
         }, this);
 
