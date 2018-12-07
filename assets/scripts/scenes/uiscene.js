@@ -10,6 +10,8 @@ let pickIcon;
 let topBar;
 let burger;
 let burgerInfo;
+let healthIcon;
+let healthInfo;
 
 export default class UiScene extends phaser.Scene {
 
@@ -40,6 +42,9 @@ export default class UiScene extends phaser.Scene {
         
         burgerInfo = this.add.text(burger.x + 10, burger.y - 5, '', { font: '24px Arial', fill: '#000000' });
 
+        healthIcon = this.add.sprite(750, burger.y, 'heart')
+        healthInfo = this.add.text(healthIcon.x + 10, healthIcon.y - 5, '', { font: '24px Arial', fill: '#000000' })
+
             //pickIcon = this.add.sprite(goldInfo.getBottomRight().x + 80, goldInfo.getBottomRight().y + 10, 'tools')
         pickIcon = this
           
@@ -50,12 +55,42 @@ export default class UiScene extends phaser.Scene {
   
             store.pickFrameSet = true
 
-            console.log('frame set')
+            //console.log('frame set')
         })
 
 
         ourGame.events.on('addGold', function (inventory) {
-            this.pickAxe = inventory.pickaxe;    
+                
+            this.gold = inventory.gold;
+
+            //console.log(this.pickAxe)
+
+            if (Math.floor(this.gold / 10) <= 0) {
+                goldCount = 0
+            } else if (Math.floor(this.gold / 10) === 1) {
+                goldCount = 1
+            } else if (Math.floor(this.gold / 10) === 2) {
+                goldCount = 2
+            } else if (Math.floor(this.gold / 10) === 3) {
+                goldCount = 3
+            } else if (Math.floor(this.gold / 10) === 4) {
+                goldCount = 4
+            } else if (Math.floor(this.gold / 10) === 5) {
+                goldCount = 5
+            } else if (Math.floor(this.gold / 10) >= 6) {
+                goldCount = 6
+            }
+
+            //console.log(goldCount)
+
+            goldIcon.setFrame(goldCount)
+            
+            goldInfo.setText('' + this.gold);
+
+        }, this);
+
+        shop.events.on('addGold', function (inventory) {
+                
             this.gold = inventory.gold;
 
             //console.log(this.pickAxe)
@@ -86,6 +121,12 @@ export default class UiScene extends phaser.Scene {
 
         shop.events.on('addFood', function () {
             burgerInfo.setText('' + ourGame.player.data.values.inventory.food)
+        }, this)
+        ourGame.events.on('addFood', function () {
+            burgerInfo.setText('' + ourGame.player.data.values.inventory.food)
+        }, this)
+        ourGame.events.on('addHealth', function () {
+            healthInfo.setText('' + ourGame.player.data.values.hp)
         }, this)
     }
 }

@@ -79,7 +79,7 @@ const signOutFailure = function () {
 const deleteSuccess = function () {
   $('#display-message').html('').hide()
   $('#display-message').css('color', 'green')
-  $('#display-message').text(`Save deleted`).fadeToggle().delay(2000).fadeToggle()
+  $('#display-message').text(`DELETED!`).fadeToggle().delay(2000).fadeToggle()
   gameIndex.start()
 
 }

@@ -19,6 +19,7 @@ import phaser from 'phaser';
   const burger = require('../../images/UIpack_RPG/PNG/baconcheeseburger1.png')
   const goldSheet = require('../../tilesets/gold-stack-sheet.png')
   const tools = require('../../tilesets/IconsPJ - 24px.png')
+  const heart = require('../../images/heart_full_16x16.png')
 
 
 export default class PreloaderScene extends phaser.Scene {
@@ -135,6 +136,7 @@ ready () {
       this.load.image('brownBtn', brownButton)
       this.load.image('whiteBtn', whiteButton)
       this.load.image('burger', burger)
+      this.load.image('heart', heart)
       //this.load.image('gold1', gold1)
       this.load.spritesheet('golds', goldSheet, { frameWidth: 64, frameHeight: 64 })
       this.load.spritesheet('tools', tools, { frameWidth: 24, frameHeight: 24 })

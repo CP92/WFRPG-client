@@ -2,6 +2,12 @@ import phaser from 'phaser';
 
 const auth = require('../auth/events')
 let actionKey;
+ let miningLvlCost;
+    let strLvlCost;
+    let foodText
+    let strLvlText
+    let miningLvlText
+    let ourGame
  
 export default class ShopScene extends phaser.Scene {
   constructor () {
@@ -14,9 +20,9 @@ export default class ShopScene extends phaser.Scene {
  
   create () {
     
-    let ourGame = this.scene.get('Game');
+    ourGame = this.scene.get('Game');
 
-    console.log(ourGame)
+    //console.log(ourGame)
 
     let uiPanel = this.add.image(400, 300, 'uiPanel')
     uiPanel.setScale(5)
@@ -26,11 +32,11 @@ export default class ShopScene extends phaser.Scene {
     let miningLvlButton = this.add.sprite(uiPanel.x - 210, strLvlButton.y + 50, 'brownBtn').setTint(0xff0000).setInteractive()
 
 
-    let foodText = this.add.text(foodButton.x + 30, foodButton.y - 10, 'Buy food, it heals you. Cost: 5 Gold').setColor('red')
+     foodText = this.add.text(foodButton.x + 30, foodButton.y - 10, 'Buy food, it heals you. Cost: 5 Gold').setColor('red')
     //let foodCostText = this.add.text(foodText.x + 200, foodText.y, 'Cost: 5 Gold')
-    let strLvlText = this.add.text(strLvlButton.x + 30, strLvlButton.y - 10, `Raise you Strength level. cost: ${ourGame.player.data.values.strLvl * 5} Gold`).setColor('red')
+    strLvlText = this.add.text(strLvlButton.x + 30, strLvlButton.y - 10, `Raise you Strength level. cost: ${strLvlCost} Gold`).setColor('red')
     //let strLvlCostText = this.add.text(strLvlText.x + 200, strLvlText.y, `cost: ${ourGame.player.data.values.strLvl} Gold`)
-    let miningLvlText = this.add.text(miningLvlButton.x + 30, miningLvlButton.y - 10, `Raise you Mining level. cost: ${ourGame.player.data.values.miningLvl * 5} Gold`).setColor('red')
+    miningLvlText = this.add.text(miningLvlButton.x + 30, miningLvlButton.y - 10, `Raise you Mining level. cost: ${miningLvlCost} Gold`).setColor('red')
     //let miningLvlCostText = this.add.text(miningLvlText.x + 200, miningLvlText.y - 10, `cost: ${(ourGame.player.data.values.miningLvl)} Gold`)
 
     // Set on click event
@@ -42,31 +48,41 @@ export default class ShopScene extends phaser.Scene {
 
     foodButton.on('pointerdown', function (pointer) {
       if (ourGame.player.data.values.inventory.gold >= 5 ) {
-        console.log(ourGame.player.data.values.inventory.food)
+        //console.log(ourGame.player.data.values.inventory.food)
         ourGame.player.data.values.inventory.food += 1
-        console.log(ourGame.player.data.values.inventory.food)
+        //console.log(ourGame.player.data.values.inventory.food)
         ourGame.player.data.values.inventory.gold -= 5
         this.events.emit('addFood')
+        this.events.emit('addGold', ourGame.player.data.values.inventory)
       } else {
 
       }
     }, this)
 
     strLvlButton.on('pointerdown', function (pointer) {
-      //this.canvas.remove()
-      
-      
-      //window.game = null
+      if (ourGame.player.data.values.inventory.gold >= (ourGame.player.data.values.strLvl * 5)) {
+        ourGame.player.data.values.strLvl += 1
+        ourGame.player.data.values.inventory.gold -= (ourGame.player.data.values.strLvl * 5)
+        //console.log(ourGame.player.data.values.strLvl)
+        this.events.emit('addGold', ourGame.player.data.values.inventory)
+      }
     }, this)
 
     miningLvlButton.on('pointerdown', function (pointer) {
-      
+      if (ourGame.player.data.values.inventory.gold >= (ourGame.player.data.values.miningLvl * 5)) {
+        ourGame.player.data.values.miningLvl += 1
+        ourGame.player.data.values.inventory.gold -= (ourGame.player.data.values.miningLvl * 5)
+        this.events.emit('addGold', ourGame.player.data.values.inventory)
+      }
     }, this)
 
   }
 
   update () {
-    
+    miningLvlCost = (ourGame.player.data.values.miningLvl * 5)
+    miningLvlText.setText(`Raise you Mining level. cost: ${miningLvlCost} Gold`)
+    strLvlCost = (ourGame.player.data.values.strLvl * 5)
+    strLvlText.setText(`Raise you Strength level. cost: ${strLvlCost} Gold`)
   }
 };
 

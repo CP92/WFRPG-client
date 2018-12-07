@@ -201,9 +201,11 @@ export default class GameScene extends phaser.Scene {
       saver.setNewSave(this.player.data.values.inventory.bow, this.player.data.values.inventory.pickaxe, this.player.data.values.inventory.sword, this.player.body.x, this.player.body.y, this.player.data.values.inventory.gold, this.player.data.values.hp, this.player.data.values.strLvl, this.player.data.values.miningLvl, this.player.data.values.inventory.food)
         .then((response) => {
           store.playerData = response.player
-          console.log('new save')
+          $('#display-message').css('color', 'green')
+          $('#display-message').text(`SAVED!`).fadeToggle().delay(2000).fadeToggle()
+          
         })
-      console.log(store.playerData)
+      //console.log(store.playerData)
     }
     goldRock1 = this.physics.add.sprite(this.goldRock1Object.x, this.goldRock1Object.y, 'rocks', 224).setTint(0xffd700)
     goldRock2 = this.physics.add.sprite(this.goldRock2Object.x, this.goldRock2Object.y, 'rocks', 224).setTint(0xffd700)
@@ -332,7 +334,7 @@ export default class GameScene extends phaser.Scene {
     camera.setBounds(0, 0, map.widthInPixels,
       map.heightInPixels)
 
-    actionKey = this.input.keyboard.addKeys('E,W,A,S,D,P,SPACE')
+    actionKey = this.input.keyboard.addKeys('E,W,A,S,D,P,SPACE,F')
 
     // Turn debugger on
     this.input.keyboard.once('keydown_K', event => {
@@ -354,13 +356,15 @@ export default class GameScene extends phaser.Scene {
       
         saver.setUpdateSave(store.playerData._id, this.player.data.values.inventory.bow, this.player.data.values.inventory.pickaxe, this.player.data.values.inventory.sword, this.player.body.x, this.player.body.y, this.player.data.values.inventory.gold, this.player.data.values.hp, this.player.data.values.strLvl, this.player.data.values.miningLvl, this.player.data.values.inventory.food)
           //.then(response => console.log(response))
-        console.log('Updated')
+       // console.log('Updated')
+        $('#display-message').css('color', 'green')
+        $('#display-message').text(`SAVED!`).fadeToggle().delay(2000).fadeToggle()
         // saveText.setText('Save updated!')
 
     }
 
     function attackFrameUpdateCallback (sprite, animation) {
-      console.log('Triggered')
+      //console.log('Triggered')
   }
 
     // waitTimerEvent = scene.time.addEvent({ delay: 1000, repeat: -1, callback: removeWaitTimer(this.goldRock1Object), callbackScope: this })
@@ -371,7 +375,7 @@ export default class GameScene extends phaser.Scene {
 
   update (time, delta) {
     const playerSpeed = 175
-    const knockback = 1000
+    const knockback = (1000 * this.player.data.values.strLvl)
     
     const playerPrevVelocity = this.player.body.velocity.clone()
 
@@ -444,6 +448,13 @@ export default class GameScene extends phaser.Scene {
       goldRock6RespawnTimer = null
     }
 
+    if (actionKey.F.isDown) {
+      if ((this.player.data.values.inventory.food > 0)) {
+        this.player.data.values.hp += 1
+        this.player.data.values.inventory.food -= 1
+      }
+    }
+
     // Press E to open chests if in vicinity and in front of the chest
     if (actionKey.E.isDown) {
       // console.log(this.player.body.x)
@@ -470,9 +481,10 @@ export default class GameScene extends phaser.Scene {
         this.spritePickaxeChest = this.physics.add.sprite(this.pickaxeChestObject.x, this.pickaxeChestObject.y, 'chests', 1)
         this.pickaxeChestObject.data.state.opened = true
         this.player.data.values.inventory.pickaxe = true
+        this.events.emit('addPickIcon')
       }
       // Check for rock 1
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock1Object.data.destroyed && (this.time.now > (waitMineTime + 1000)) && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock1.body.x) < 40) && (Math.abs(this.player.body.y - goldRock1.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock1Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10)))) && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock1.body.x) < 40) && (Math.abs(this.player.body.y - goldRock1.body.y) < 50)) {
         // damages rocks
         this.goldRock1Object.data.damage -= 1
         // Starts the timer that forces the user to wait to mine a rock again
@@ -485,10 +497,10 @@ export default class GameScene extends phaser.Scene {
         }
         // Add gold to this inventory
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+        //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 2
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock2Object.data.destroyed && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock2.body.x) < 40) && (Math.abs(this.player.body.y - goldRock2.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock2Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock2.body.x) < 40) && (Math.abs(this.player.body.y - goldRock2.body.y) < 50)) {
         this.goldRock2Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock2Object.data.damage <= 0) {
@@ -497,10 +509,10 @@ export default class GameScene extends phaser.Scene {
           goldRock2RespawnTimer = this.time.now
         }
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+       // console.log(this.player.data.values.inventory.gold)
       }
       // check for rock 3
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock3Object.data.destroyed && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock3.body.x) < 40) && (Math.abs(this.player.body.y - goldRock3.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock3Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock3.body.x) < 40) && (Math.abs(this.player.body.y - goldRock3.body.y) < 50)) {
         this.goldRock3Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock3Object.data.damage <= 0) {
@@ -509,10 +521,10 @@ export default class GameScene extends phaser.Scene {
           goldRock3RespawnTimer = this.time.now
         }
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+        //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 4
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock4Object.data.destroyed && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock4.body.x) < 40) && (Math.abs(this.player.body.y - goldRock4.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock4Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock4.body.x) < 40) && (Math.abs(this.player.body.y - goldRock4.body.y) < 50)) {
         this.goldRock4Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock4Object.data.damage <= 0) {
@@ -521,10 +533,10 @@ export default class GameScene extends phaser.Scene {
           goldRock4RespawnTimer = this.time.now
         }
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+       // console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 5
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock5Object.data.destroyed && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock5.body.x) < 40) && (Math.abs(this.player.body.y - goldRock5.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock5Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock5.body.x) < 40) && (Math.abs(this.player.body.y - goldRock5.body.y) < 50)) {
         this.goldRock5Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock5Object.data.damage <= 0) {
@@ -533,10 +545,10 @@ export default class GameScene extends phaser.Scene {
           goldRock5RespawnTimer = this.time.now
         }
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+        //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 6
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock6Object.data.destroyed && (this.time.now > (waitMineTime + 1000))) && (Math.abs(this.player.body.x - goldRock6.body.x) < 40) && (Math.abs(this.player.body.y - goldRock6.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock6Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock6.body.x) < 40) && (Math.abs(this.player.body.y - goldRock6.body.y) < 50)) {
         this.goldRock6Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock6Object.data.damage <= 0) {
@@ -545,7 +557,7 @@ export default class GameScene extends phaser.Scene {
           goldRock6RespawnTimer = this.time.now
         }
         this.player.data.values.inventory.gold += getRandomGold()
-        console.log(this.player.data.values.inventory.gold)
+       // console.log(this.player.data.values.inventory.gold)
       }
     }
     
@@ -593,7 +605,10 @@ export default class GameScene extends phaser.Scene {
     for (let i = 0; i < numEnemies; i++) {
       //console.log(enemies[i])
       enemies[i].body.setVelocity(0)
-      if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20)) {
+      if (enemies[i].state.hp <= 0) {
+      enemies[i].anims.play('skelly-death', true)
+      enemies[i].body.idDead = true
+     } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20)) {
         enemies[i].anims.play('skelly-attack', true)
         
       } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 300) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 300)) {
@@ -625,14 +640,16 @@ export default class GameScene extends phaser.Scene {
         enemies[i].state.inAttack = true
       } else if ( (enemies[i].anims.currentFrame.textureFrame === 'skelly-attack.009') ) {
         enemies[i].state.inAttack = false
-      }
+      } 
+
+
       
     }
 
     if (phaser.Input.Keyboard.JustDown(actionKey.SPACE)) {
       for (let i = 0; i < numEnemies; i++) {
          if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20)) {
-          enemies[i].state.hp -= 1
+          enemies[i].state.hp -= (1 + this.player.data.values.strLvl) 
           enemies[i].body.setVelocity(0)
           if (this.player.body.x > enemies[i].body.x) {
             enemies[i].body.setVelocityX( - knockback)
@@ -656,16 +673,20 @@ export default class GameScene extends phaser.Scene {
     }
 
     this.events.emit('addGold', this.player.data.values.inventory)
+
+    this.events.emit('addFood')
+
+    this.events.emit('addHealth')
     // console.log(time)
     // console.log(saveTimeEvent.getProgress().toString())
   }
 };
 
 function removeWaitTimer (object) {
-  console.log(object.data.wait)
-  console.log('wait over')
+  //console.log(object.data.wait)
+  //console.log('wait over')
   object.data.wait = false
-  console.log(object)
+  //console.log(object)
 }
 
 function getRandomMaxDamage () {
