@@ -2,11 +2,11 @@
 
 A 2D game that allows you to collect resources, level up, and fight skelletons.
 
-* [Deployed User Site](https://dontbin.github.io/WFRPG-client/)
+* [Deployed User Site](https://www.paplog.run/WFRPG-client/)
 * [Client Repo](https://github.com/CP92/WFRPG-client)
 
 API
-* [Deployed API](https://pure-citadel-23065.herokuapp.com/)
+* [Deployed API](https://ancient-escarpment-30289.herokuapp.com)
 * [API Repo](https://github.com/CP92/WFRPG-express-api)
 
 
@@ -37,8 +37,17 @@ This was an absolute blast and nightmare. Learning a game framework is a lot of 
 
 We spent the evening before the project creating wireframes, ERDs, and user stories. The first morning of the project we discussed the all three planning elements, confirmed they were good, and went to work.
 
-* [User Stories]()
-* [Wireframe]()
+## User Stories
+1. User can sign up and in.
+2. User can create a game instance.
+3. User can play game, collecting resources leveling up, and fighting enemies.
+4. Game will automatically make POST requests for new games.
+5. Game will automatically auto save making PATCH requests.
+6. User can delete save file and start new game.
+7.User can leave and come back at any time to continue playing. 
+
+
+* [Wireframe](https://imgur.com/fUf6fpn)
 
 ### Process & Problem-Solving
 
@@ -53,3 +62,5 @@ wednesday and thursday were dedicated to enemy NPCs which can attack the player,
 The hardest part of this was using the new and incomplete documentation for the phaser 3 framework. I had to use the HTML5 game dev forums many times for help.
 
 ## Client image
+
+![client](https://imgur.com/a/X4TyIFY)
