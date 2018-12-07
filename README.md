@@ -53,3 +53,5 @@ wednesday and thursday were dedicated to enemy NPCs which can attack the player,
 The hardest part of this was using the new and incomplete documentation for the phaser 3 framework. I had to use the HTML5 game dev forums many times for help.
 
 ## Client image
+
+![client](https://imgur.com/a/X4TyIFY)

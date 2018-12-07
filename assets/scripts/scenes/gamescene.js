@@ -43,6 +43,7 @@ let skelly2Sprite;
 let skelly3Sprite;
 let skelly4Sprite;
 let skelly5Sprite;
+let skellyTimer = [];
 let waitMineTime = 0
 const showDebug = false
 
@@ -163,7 +164,7 @@ export default class GameScene extends phaser.Scene {
     // if there is no save data, use default values
 
     // Chest objects
-    // console.log(this.swordChestObject)
+     ///console.log(this.swordChestObject)
       this.swordChestObject.data = {
         state: {
           opened: false
@@ -206,6 +207,10 @@ export default class GameScene extends phaser.Scene {
           
         })
       //console.log(store.playerData)
+
+      this.events.emit('showIntro')
+
+
     }
     goldRock1 = this.physics.add.sprite(this.goldRock1Object.x, this.goldRock1Object.y, 'rocks', 224).setTint(0xffd700)
     goldRock2 = this.physics.add.sprite(this.goldRock2Object.x, this.goldRock2Object.y, 'rocks', 224).setTint(0xffd700)
@@ -219,11 +224,11 @@ export default class GameScene extends phaser.Scene {
     skelly3Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5)
     skelly4Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5)
     skelly5Sprite = this.physics.add.sprite(skellySpawn.x + randomSkellySpawn(), skellySpawn.y + randomSkellySpawn(), 'skellyAtlas', 'skelly-idle.000').setScale(1.5)
-    skelly1Sprite.state = { inAttack: false, hp: 20 }
-    skelly2Sprite.state = { inAttack: false, hp: 20 }
-    skelly3Sprite.state = { inAttack: false, hp: 20 }
-    skelly4Sprite.state = { inAttack: false, hp: 20 }
-    skelly5Sprite.state = { inAttack: false, hp: 20 }
+    skelly1Sprite.state = { inAttack: false, hp: 60 }
+    skelly2Sprite.state = { inAttack: false, hp: 60 }
+    skelly3Sprite.state = { inAttack: false, hp: 60 }
+    skelly4Sprite.state = { inAttack: false, hp: 60 }
+    skelly5Sprite.state = { inAttack: false, hp: 60 }
     // Skelly gen group
       this.skellies = this.add.group()
       this.skellies.addMultiple([
@@ -324,7 +329,7 @@ export default class GameScene extends phaser.Scene {
       key: 'skelly-death',
       frames: anims.generateFrameNames('skellyAtlas', { prefix: 'skelly-death.', start: 0, end: 9, zeroPad: 3 }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
     })
         
 
@@ -367,6 +372,8 @@ export default class GameScene extends phaser.Scene {
       //console.log('Triggered')
   }
 
+  
+
     // waitTimerEvent = scene.time.addEvent({ delay: 1000, repeat: -1, callback: removeWaitTimer(this.goldRock1Object), callbackScope: this })
 
     // saveText = this.add.text(400, 300, 'Saved', { fontSize: '32px', fill: '#000000' });
@@ -375,7 +382,17 @@ export default class GameScene extends phaser.Scene {
 
   update (time, delta) {
     const playerSpeed = 175
-    const knockback = (1000 * this.player.data.values.strLvl)
+    let knockback
+
+    if (this.player.data.values.strLvl < 2) {
+      knockback = 10
+    } else if (this.player.data.values.strLvl <= 5) {
+      knockback = 10 * this.player.data.values.strLvl
+    } else if (this.player.data.values.strLvl <= 10 ) {
+      knockback = 100 * this.player.data.values.strLvl
+    } else {
+      knockback = 1000 * this.player.data.values.strLvl
+    }
     
     const playerPrevVelocity = this.player.body.velocity.clone()
 
@@ -385,12 +402,12 @@ export default class GameScene extends phaser.Scene {
     this.player.body.setVelocity(0)
     
 
-    if (phaser.Input.Keyboard.JustDown(actionKey.E)) {
-       if ((Math.abs(this.player.body.x - this.statueShopObject.x) < 100) && ((this.player.body.y - this.statueShopObject.y) < 100)) {
-        this.scene.switch('Shop')
-      }
-      // this.scene.pause()
-    }
+    //if (phaser.Input.Keyboard.JustDown(actionKey.E)) {
+    //   if ((Math.abs(this.player.body.x - this.statueShopObject.x) < 100) && ((this.player.body.y - this.statueShopObject.y) < 100)) {
+    //    this.scene.switch('Shop')
+    //  }
+    //  // this.scene.pause()
+    //}
     // Triggers rock respawn
     if (goldRock1RespawnTimer && (this.time.now > (goldRock1RespawnTimer + 30000))) {
       goldRock1.setTint(0xffd700)
@@ -448,7 +465,7 @@ export default class GameScene extends phaser.Scene {
       goldRock6RespawnTimer = null
     }
 
-    if (actionKey.F.isDown) {
+    if (phaser.Input.Keyboard.JustDown(actionKey.F)) {
       if ((this.player.data.values.inventory.food > 0)) {
         this.player.data.values.hp += 1
         this.player.data.values.inventory.food -= 1
@@ -456,7 +473,11 @@ export default class GameScene extends phaser.Scene {
     }
 
     // Press E to open chests if in vicinity and in front of the chest
-    if (actionKey.E.isDown) {
+    if (phaser.Input.Keyboard.JustDown(actionKey.E)) {
+       if ((Math.abs(this.player.body.x - this.statueShopObject.x) < 100) && ((this.player.body.y - this.statueShopObject.y) < 100)) {
+        this.scene.switch('Shop')
+      }
+      //console.log('E')
       // console.log(this.player.body.x)
       // console.log(this.player.body.y)
       // console.log(spriteSwordChest.body.x)
@@ -484,7 +505,7 @@ export default class GameScene extends phaser.Scene {
         this.events.emit('addPickIcon')
       }
       // Check for rock 1
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock1Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10)))) && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock1.body.x) < 40) && (Math.abs(this.player.body.y - goldRock1.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock1Object.data.destroyed && (this.time.now > (waitMineTime + (1000 ))) && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock1.body.x) < 40) && (Math.abs(this.player.body.y - goldRock1.body.y) < 50)) {
         // damages rocks
         this.goldRock1Object.data.damage -= 1
         // Starts the timer that forces the user to wait to mine a rock again
@@ -496,11 +517,11 @@ export default class GameScene extends phaser.Scene {
           goldRock1RespawnTimer = this.time.now
         }
         // Add gold to this inventory
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
         //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 2
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock2Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock2.body.x) < 40) && (Math.abs(this.player.body.y - goldRock2.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock2Object.data.destroyed && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock2.body.x) < 40) && (Math.abs(this.player.body.y - goldRock2.body.y) < 50)) {
         this.goldRock2Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock2Object.data.damage <= 0) {
@@ -508,11 +529,11 @@ export default class GameScene extends phaser.Scene {
           this.goldRock2Object.data.destroyed = true
           goldRock2RespawnTimer = this.time.now
         }
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
        // console.log(this.player.data.values.inventory.gold)
       }
       // check for rock 3
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock3Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock3.body.x) < 40) && (Math.abs(this.player.body.y - goldRock3.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock3Object.data.destroyed && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock3.body.x) < 40) && (Math.abs(this.player.body.y - goldRock3.body.y) < 50)) {
         this.goldRock3Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock3Object.data.damage <= 0) {
@@ -520,11 +541,11 @@ export default class GameScene extends phaser.Scene {
           this.goldRock3Object.data.destroyed = true
           goldRock3RespawnTimer = this.time.now
         }
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
         //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 4
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock4Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock4.body.x) < 40) && (Math.abs(this.player.body.y - goldRock4.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock4Object.data.destroyed && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock4.body.x) < 40) && (Math.abs(this.player.body.y - goldRock4.body.y) < 50)) {
         this.goldRock4Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock4Object.data.damage <= 0) {
@@ -532,11 +553,11 @@ export default class GameScene extends phaser.Scene {
           this.goldRock4Object.data.destroyed = true
           goldRock4RespawnTimer = this.time.now
         }
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
        // console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 5
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock5Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock5.body.x) < 40) && (Math.abs(this.player.body.y - goldRock5.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock5Object.data.destroyed && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock5.body.x) < 40) && (Math.abs(this.player.body.y - goldRock5.body.y) < 50)) {
         this.goldRock5Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock5Object.data.damage <= 0) {
@@ -544,11 +565,11 @@ export default class GameScene extends phaser.Scene {
           this.goldRock5Object.data.destroyed = true
           goldRock5RespawnTimer = this.time.now
         }
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
         //console.log(this.player.data.values.inventory.gold)
       }
       // Check for rock 6
-      if ((this.player.data.values.inventory.pickaxe && !this.goldRock6Object.data.destroyed && (this.time.now > (waitMineTime + (1000 - (this.player.data.values.miningLvl * 10))))) && (Math.abs(this.player.body.x - goldRock6.body.x) < 40) && (Math.abs(this.player.body.y - goldRock6.body.y) < 50)) {
+      if ((this.player.data.values.inventory.pickaxe && !this.goldRock6Object.data.destroyed && (this.time.now > (waitMineTime + (1000 )))) && (Math.abs(this.player.body.x - goldRock6.body.x) < 40) && (Math.abs(this.player.body.y - goldRock6.body.y) < 50)) {
         this.goldRock6Object.data.damage -= 1
         waitMineTime = this.time.now
         if (this.goldRock6Object.data.damage <= 0) {
@@ -556,7 +577,7 @@ export default class GameScene extends phaser.Scene {
           this.goldRock6Object.data.destroyed = true
           goldRock6RespawnTimer = this.time.now
         }
-        this.player.data.values.inventory.gold += getRandomGold()
+        this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.miningLvl)
        // console.log(this.player.data.values.inventory.gold)
       }
     }
@@ -604,14 +625,24 @@ export default class GameScene extends phaser.Scene {
 
     for (let i = 0; i < numEnemies; i++) {
       //console.log(enemies[i])
+      if (this.time.now > (skellyTimer[i] + 30000) && enemies[i].body.isDead) {
+      
+      enemies[i].state.hp = 60
+      skellyTimer[i] = null
+      enemies[i].body.isDead = false
+      //console.log(enemies[i].state.hp)
+    }
       enemies[i].body.setVelocity(0)
-      if (enemies[i].state.hp <= 0) {
+      if (enemies[i].state.hp <= 0 && !enemies[i].body.isDead) {
       enemies[i].anims.play('skelly-death', true)
-      enemies[i].body.idDead = true
-     } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20)) {
+      //enemies[i].anims.pause()
+      this.player.data.values.inventory.gold += (getRandomGold() * this.player.data.values.strLvl)
+      enemies[i].body.isDead = true
+      skellyTimer[i] = this.time.now
+     } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20) && !enemies[i].body.isDead) {
         enemies[i].anims.play('skelly-attack', true)
         
-      } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 300) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 300)) {
+      } else if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 300) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 300) && !enemies[i].body.isDead) {
         //console.log(Math.abs(this.player.body.x))
         //console.log(Math.abs(this.player.body.y))
         if (this.player.body.x < enemies[i].body.x) {
@@ -631,7 +662,7 @@ export default class GameScene extends phaser.Scene {
         }
         enemies[i].body.velocity.normalize().scale(skellySpeed)
         
-    } else {
+    } else if (!enemies[i].body.isDead) {
         enemies[i].anims.play('skelly-idle', true)
       }
 
@@ -649,7 +680,7 @@ export default class GameScene extends phaser.Scene {
     if (phaser.Input.Keyboard.JustDown(actionKey.SPACE)) {
       for (let i = 0; i < numEnemies; i++) {
          if ((Math.abs(Math.floor(this.player.body.x - enemies[i].body.x)) < 40) && (Math.abs(Math.floor(this.player.body.y - enemies[i].body.y)) < 20)) {
-          enemies[i].state.hp -= (1 + this.player.data.values.strLvl) 
+          enemies[i].state.hp -= (1 + (this.player.data.values.strLvl / 2)) 
           enemies[i].body.setVelocity(0)
           if (this.player.body.x > enemies[i].body.x) {
             enemies[i].body.setVelocityX( - knockback)
