@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>WFRPG</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Do not add `link` tags-->
+      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+      <!-- Do not add `script` tags-->
+      <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+      <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+        
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        <div class="sign-in">
+          <button id='sign-in-button' class="btn btn-success navbar-btn sign-in-button" type="button" data-toggle="collapse" data-target="#sign-in-form" aria-controls="sign-in-form" aria-expanded="false">LOG IN</button>
+        
+      </div>
+        <!-- New Login Start -->
+        <form id="sign-in-form" class="collapse sign-in-form" aria-labelledby="sign-in-button">
+          <div class="form-group">
+            <input required type="email" name="credentials[email]" placeholder="Enter Email" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <input required name="credentials[password]" type="password" placeholder="Enter Password" class="form-control"/>
+          </div>
+          <button type="submit" class="btn btn-success">Sign in</button>
+        </form>
+        <!-- New Login End -->
+
+    </li>
+
+    <li class="nav-item active">
+      <div class="sign-up">
+
+        <button id='sign-up-button' class="btn btn-warning navbar-btn" type="button" data-toggle="collapse" data-target="#sign-up-form" aria-controls="sign-up-form" aria-expanded="false">SIGN-UP</button>
+    
+      </div>
+
+
+        <!-- New Sign-Up Start -->
+        <form id="sign-up-form" class="collapse sign-up-form">
+          <div class="form-group">
+            <input required type="email" name="credentials[email]" placeholder="Enter Email" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <input required name="credentials[password]" type="password" placeholder="Enter Password" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <input required name="credentials[password_confirmation]" type="password" placeholder="Confirm Password" class="form-control"/>
+          </div>
+          <button type="submit" class="btn btn-warning">Sign up</button>
+        </form>
+        <!-- New Sig-Up End -->
+
+  </li>
+
+        <li class="nav-item active">
+          <div class="change-password-dropdown">
+            <button id='change-password-button' class="btn btn-warning navbar-btn hidden" type="button" data-toggle="collapse" data-target="#change-password-form" aria-controls="change-password-form" aria-expanded="false">Change Password</button>
+            
+            <!-- New Change-Password Start -->
+            <form id="change-password-form" class="collapse change-password-form" aria-labelledby="change-password-button">
+              <div class="form-group">
+                <input required type="password" name="passwords[old]" placeholder="Enter Old Password" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <input required type="password" name="passwords[new]" placeholder="Enter New Password" class="form-control"/>
+              </div>
+              <button type="submit" class="btn btn-warning">Change Password</button>
+            </form>
+            <!-- New Change-Password End -->
+
+        </div>
+        </li>
+        <li class="nav-item active">
+          <div>
+          <button id='sign-out-button' class="btn btn-danger navbar-btn hidden" type="button">SIGN-OUT</button>
+        </div>
+        </li>
+        <li class="nav-item active">
+        <div class="delete-save">
+          <button id='delete-save-button' class="hidden btn btn-danger navbar-btn delete-save-button" type="button" data-toggle="collapse" data-target="#delete-save-drop-button" aria-controls="delete-save-drop-button" aria-expanded="false">Options</button>
+        </div>
+        <!-- New Login Start -->
+        <div id="delete-save-drop-button" class="collapse delete-save-drop-button" aria-labelledby="delete-save-button">
+          <button id="delete-button" type="submit" class="btn btn-success">Delete Save</button>
+        </div>
+        <!-- New Login End -->
+
+    </li>
+      </ul>
+    </div>
+    <div id="display-message"></div>
+  </nav>
+      <div class="hidden" id="content"></div>
+      <div>
+        <h1>How to play</h1>
+        <ul>
+          <li>WASD to move your character</li>
+          <li>E to perform actions such as mine for gold or access the statue shop, and open chests.</li>
+          <li>Space bar to attack monsters</li>
+          <li>F to eat food once you have aquired some</li>
+        </ul>
+        <h2>Features</h2>
+        <ul>
+          <li>Sign-up/Sign-in</li>
+          <li>Autosave feature. Every 60 seconds the game will save, and upon loading the game your save will be loaded if one exists or created if it doesn't.</li>
+          <li>A lone chest (complete with chest animation and UI updates) that grants the player the pickaxe item and the ability to mine for gold. (to the right of the statue)</li>
+          <li>A shop statue which allows you to purchase food and upgrade your mining and strength levels.</li>
+          <li>Food will heal you when you've taken damage, and mining and strength levels make it easier and more profitable to mine and fight.</li>
+          <li>You can fight skellies to the left of the statue shop. Killing skellies will give you more gold.</li>
+        </ul>
+      </div>
+    </body>
+</html>
